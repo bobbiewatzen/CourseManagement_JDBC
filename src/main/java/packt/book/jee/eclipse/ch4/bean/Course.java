@@ -13,7 +13,7 @@ public class Course {
   //private CourseDAO courseDAO = new CourseDAO();
   
   public boolean isValidCourse() {
-	return name != null && credits != 0;
+	return name != null && name.trim().length() > 0 && credits != 0;
   }
   
   public void addCourse() throws SQLException {
