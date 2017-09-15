@@ -11,7 +11,7 @@ import packt.book.jee.eclipse.ch4.bean.Teacher;
 import packt.book.jee.eclipse.ch4.db.connection.DatabaseConnectionFactory;
 
 public class CourseDAO {
-  public static void addCourse(Course course) throws SQLException  {
+  public /*static*/ void addCourse(Course course) throws SQLException  {
 	Connection con = null;
 	PreparedStatement stmt = null;
 	ResultSet rs = null;
@@ -33,7 +33,7 @@ public class CourseDAO {
     }
   }
   
-  public static List<Course> getCourses() throws SQLException {
+  public /*static*/ List<Course> getCourses() throws SQLException {
     Course course = null;
     List<Course> courses = new ArrayList<Course>();
     String sql = "SELECT Course.id AS courseId, Course.name AS courseName, Course.credits AS credits, Teacher.id AS teacherId, Teacher.first_name AS firstName, Teacher.last_name AS lastName, Teacher.designation AS designation " + "FROM Course LEFT OUTER JOIN Teacher " + "ON Course.Teacher_id = Teacher.id " + "ORDER BY Course.name;";
@@ -69,5 +69,13 @@ public class CourseDAO {
       if (stmt != null) stmt.close();
       if (rs != null) rs.close();
     }
+  }
+
+  public int getNumStudentsInCourse(int id) {
+	return 50;
+  }
+  
+  public void enrolStudentInCourse(int courseId, int studentId) {
+	  ;
   }
 }

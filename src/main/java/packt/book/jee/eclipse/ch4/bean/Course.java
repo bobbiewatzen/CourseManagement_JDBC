@@ -10,18 +10,31 @@ public class Course {
   private int credits;
   private int teacherId;
   private Teacher teacher;
-  //private CourseDAO courseDAO = new CourseDAO();
+  private int MaxStudents;
+  private CourseDAO courseDAO = new CourseDAO();
   
   public boolean isValidCourse() {
 	return name != null && name.trim().length() > 0 && credits != 0;
   }
   
   public void addCourse() throws SQLException {
-	CourseDAO.addCourse(this); //static method
+	courseDAO.addCourse(this); //static method
   }
   
   public List<Course> getCourses() throws SQLException {
-	return CourseDAO.getCourses();
+	return courseDAO.getCourses();
+  }
+  
+  public void setCourseDAO(CourseDAO courseDAO) {
+	this.courseDAO = courseDAO;
+  }
+  
+  public void addStudent(Student student) throws EnrolmentFullException, SQLException {
+	//get current enrolment first
+	int currentEnrolment = courseDAO.getNumStudentsInCourse(id);
+	if (currentEnrolment >= getMaxStudents())
+	  throw new EnrolmentFullException("Course is full. Enrolment closed");
+	courseDAO.enrolStudentInCourse(id, student.getId());
   }
 
   public int getId() {
@@ -56,4 +69,12 @@ public class Course {
   public void setTeacherId(int teacherId) {
     this.teacherId = teacherId;
   }
+
+public int getMaxStudents() {
+	return MaxStudents;
+}
+
+public void setMaxStudents(int maxStudents) {
+	MaxStudents = maxStudents;
+}
 }

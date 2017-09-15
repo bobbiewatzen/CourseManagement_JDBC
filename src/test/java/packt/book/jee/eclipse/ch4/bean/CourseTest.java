@@ -2,6 +2,9 @@ package packt.book.jee.eclipse.ch4.bean;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
+//import packt.book.jee.eclipse.ch4.bean.*;
+import packt.book.jee.eclipse.ch4.dao.*;
 
 public class CourseTest {
   @Test
@@ -21,5 +24,68 @@ public class CourseTest {
     //set empty course name
     course.setName("");
     Assert.assertFalse(course.isValidCourse());
+  }
+  
+  @Test (expected = EnrolmentFullException.class)
+  public void testAddStudentWithEnrollmentFull() throws Exception {
+    CourseDAO courseDAO = Mockito.mock(CourseDAO.class);
+    try {
+      Mockito.when(courseDAO.getNumStudentsInCourse(1)).thenReturn(60);
+      Mockito.doNothing().when(courseDAO).enrolStudentInCourse(1, 1);
+    } catch (Exception e) {
+      Assert.fail(e.getMessage());
+    }
+    Course course = new Course();
+    course.setCourseDAO(courseDAO);
+    course.setId(1);
+    course.setName("course1");
+    course.setMaxStudents(60);
+    //create student
+    Student student = new Student();
+    student.setFirstName("Student1");
+    student.setId(1);
+    //now add student
+    course.addStudent(student);
+    try {
+      Mockito.verify(courseDAO,
+      Mockito.atLeastOnce()).getNumStudentsInCourse(1);
+    } catch (Exception e) {
+      Assert.fail(e.getMessage());
+    }
+    //If no exception was thrown then the test case was successful
+    //No need of Assert here
+  }
+
+  @Test
+  public void testAddStudentWithEnrollmentOpen() throws Exception {
+    CourseDAO courseDAO = Mockito.mock(CourseDAO.class);
+    try {
+      Mockito.when(courseDAO.getNumStudentsInCourse(1)).thenReturn(59);
+      Mockito.doNothing().when(courseDAO).enrolStudentInCourse(1, 1);
+    } catch (Exception e) {
+      Assert.fail(e.getMessage());
+    }
+
+    Course course = new Course();
+    course.setCourseDAO(courseDAO);
+    course.setId(1);
+    course.setName("course1");
+    course.setMaxStudents(60);
+    //create student
+    Student student = new Student();
+    student.setFirstName("Student1");
+    student.setId(1);
+    //now add student
+    course.addStudent(student);
+    try {
+      Mockito.verify(courseDAO,
+      Mockito.atLeastOnce()).getNumStudentsInCourse(1);
+      Mockito.verify(courseDAO,
+      Mockito.atLeastOnce()).enrolStudentInCourse(1,1);
+    } catch (Exception e) {
+      Assert.fail(e.getMessage());
+    }
+    //If no exception was thrown then the test case was successful
+    //No need of Assert here
   }
 }
