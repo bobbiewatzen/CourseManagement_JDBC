@@ -71,11 +71,11 @@ public class CourseDAO {
     }
   }
 
-  public int getNumStudentsInCourse(int id) {
+  public int getNumStudentsInCourse(int id) throws SQLException {
 	return 50;
   }
   
-  public void enrolStudentInCourse(int courseId, int studentId) {
+  public void enrollStudentInCourse(int courseId, int studentId) throws SQLException {
 	  ;
   }
 }

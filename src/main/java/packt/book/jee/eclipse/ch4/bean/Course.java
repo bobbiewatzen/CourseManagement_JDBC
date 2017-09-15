@@ -34,7 +34,7 @@ public class Course {
 	int currentEnrolment = courseDAO.getNumStudentsInCourse(id);
 	if (currentEnrolment >= getMaxStudents())
 	  throw new EnrolmentFullException("Course is full. Enrolment closed");
-	courseDAO.enrolStudentInCourse(id, student.getId());
+	courseDAO.enrollStudentInCourse(id, student.getId());
   }
 
   public int getId() {
